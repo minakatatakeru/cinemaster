@@ -1,0 +1,12 @@
+<div class="card">
+ <div class="card-upperinfo">
+  <h2 class="release-title"><%= @movie_data['table']['title'] %></h2>
+  <p class="release-overview">あらすじ</br>
+　 <%= @movie_data['table']['overview'] %>
+　</p>
+ </div>
+  <p><%= image_tag 'https://image.tmdb.org/t/p/w1280' + @movie_data['table']['poster_path'],class: "card-img" %></p>
+</div>
+<div>
+ <p><%#= @movie_data['table']['cast'] %></p>
+</div>

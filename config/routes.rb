@@ -1,7 +1,7 @@
  Rails.application.routes.draw do
   namespace :public do
-    get 'movie/index'
-    get 'movie/show'
+    get 'favorites/create'
+    get 'favorites/destroy'
   end
   # 顧客用
   # URL /customers/sign_in ...
@@ -25,15 +25,14 @@
    get 'about' => 'homes#about'
    resources :items, only: [:index,:show]
    resources :genres, only: [:show]
+   resources :movies, only: [:show]
    get 'customers/unsubscribe' => 'customers#unsubscribe'
    patch 'customers/withdraw' => 'customers#withdraw'
    get 'customers/my_page' => 'customers#show'
    get 'customers/information/edit' => 'customers#edit'
    patch 'customers/information' => 'customers#update'
-   delete '/cart_items/destroy_all' => 'cart_items#destroy_all'
    get 'orders/done' => 'orders#done'
    resources :orders, only: [:new,:create,:index,:show]
-   resources :shopping_addresses, only: [:index,:edit,:create,:update,:destroy]
  end
  namespace :admin do
    root to: "homes#top"
