@@ -1,8 +1,4 @@
  Rails.application.routes.draw do
-  namespace :public do
-    get 'favorites/create'
-    get 'favorites/destroy'
-  end
   # 顧客用
   # URL /customers/sign_in ...
   devise_for :customers,skip: [:passwords], controllers: {
@@ -25,7 +21,8 @@
    get 'about' => 'homes#about'
    resources :items, only: [:index,:show]
    resources :genres, only: [:show]
-   resources :movies, only: [:show]
+   resources :movies, only: [:new,:create,:index,:show]
+   resources :comments, only: [:create]
    get 'customers/unsubscribe' => 'customers#unsubscribe'
    patch 'customers/withdraw' => 'customers#withdraw'
    get 'customers/my_page' => 'customers#show'
@@ -33,6 +30,7 @@
    patch 'customers/information' => 'customers#update'
    get 'orders/done' => 'orders#done'
    resources :orders, only: [:new,:create,:index,:show]
+
  end
  namespace :admin do
    root to: "homes#top"

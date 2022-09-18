@@ -1,6 +1,9 @@
 <div class="card">
  <div class="card-upperinfo">
   <h2 class="release-title"><%= @movie_data['table']['title'] %></h2>
+          <div class=<%= "favorite_buttons_" + @movie.id.to_s %>>
+            <%#= render "favorites/favorite", movie: @movie %>
+        　</div>
   <p class="release-overview">あらすじ</br>
 　 <%= @movie_data['table']['overview'] %>
 　</p>
@@ -9,4 +12,23 @@
 </div>
 <div>
  <p><%#= @movie_data['table']['cast'] %></p>
+</div>
+<div>
+
+<h2>投稿する</H2>
+
+ <%= form_with model: @movie do |f| %>
+ <%= f.text_area :movie_content, placeholder: '本文'%>
+ <%= f.submit '送信'%>
+ <% end %>
+
+
+<h2> 投稿一覧 </h2>
+
+ <% @movies.each do |movie| %>
+ <%= link_to movie.movie_content, movie %>
+
+
+ <% end %>
+ <%= link_to 'ホーム', root_path %>
 </div>
