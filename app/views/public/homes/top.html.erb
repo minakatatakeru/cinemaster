@@ -62,7 +62,8 @@
             <div class="card">
                 <div class="card-upperinfo">
                     <%if movieinfo['table']['results'][i]['table']['title'].present?%>
-                        <!--<h3><#%= link_to movieinfo['table']['results'][i]['table']['title'], show_path(movieinfo['table']['results'][i]['table']['id'])%></h3>-->
+                    <% movie_id = movieinfo['table']['results'][i]['table']['id'] %>
+                      <h3><%= link_to "この作品の詳細を見る", movie_path(movie_id) %></h3>
                     <%end%>
 
                     <% if movieinfo['table']['results'][i]['table']['release_date'].present? %>

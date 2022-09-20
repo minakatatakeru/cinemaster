@@ -4,6 +4,7 @@ class CreateComments < ActiveRecord::Migration[6.1]
       t.text :comment_content
       t.references :customer, null: false, foreign_key: true
       t.references :movie, null: false, foreign_key: true
+      t.integer :moviedata_id
 
       t.timestamps
     end

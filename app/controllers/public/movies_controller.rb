@@ -14,17 +14,14 @@ class Public::MoviesController < ApplicationController
   end
 
   def show
-   if Movie.exists?(moviedata_id: params[:id])
-    @movie_data = JSON.parse((Tmdb::Movie.detail(params[:id], language: 'ja')).to_json)
-    @movie = Movie.find_by(moviedata_id: params[:id])
-   else
-    @movie_data = JSON.parse((Tmdb::Movie.detail(params[:id], language: 'ja')).to_json)
-    @movie = Movie.new(moviedata_id: params[:id])
-    @movie.save
-   end
-    @movies = Movie.all
-    @comments = @movie.comments  #投稿詳細に関連付けてあるコメントを全取得
-    @comment = Comment.new  #投稿詳細画面でコメントの投稿を行うので、formのパラメータ用にCommentオブジェクトを取得
+   @movie_data = JSON.parse((Tmdb::Movie.detail(params[:id], language: 'ja')).to_json)
+
+   @movie = Movie.new
+   @movie.moviedata_id = params[:id]
+
+   @movie = Movie.find_by(moviedata_id: params[:id])
+   @customer = @movie.customer
+   @comment = Comment.new  #投稿詳細画面でコメントの投稿を行うので、formのパラメータ用にCommentオブジェクトを取得
   end
 
    def create
@@ -38,7 +35,7 @@ class Public::MoviesController < ApplicationController
 
   private
   def movie_params
-    params.require(:movie).permit(:movie_content)
+    params.require(:movie).permit(:movie_content, :star, :moviedata_id)
   end
 
 end

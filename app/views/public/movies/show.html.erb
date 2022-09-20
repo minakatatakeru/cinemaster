@@ -13,22 +13,61 @@
 <div>
  <p><%#= @movie_data['table']['cast'] %></p>
 </div>
+
+
+
 <div>
+ <h2>投稿する</H2>
 
-<h2>投稿する</H2>
+  <%= form_with model: @movie do |f| %>
+  <%= f.text_area :movie_content, placeholder: '本文'%>
 
- <%= form_with model: @movie do |f| %>
- <%= f.text_area :movie_content, placeholder: '本文'%>
- <%= f.submit '送信'%>
+  <%= f.hidden_field :moviedata_id %>
+  <%= f.submit '送信'%>
+
+ <h5>評価</h5>
+ <div class="form-group row" id="star">
+  <%= f.label :star, class:'col-md-3 col-form-label' %>
+  <%= f.hidden_field :star, id: :review_star %>
+ </div>
+ <script>
+  $('#star').empty(); 　　//これがないとブラウザバックで星が増え続ける不具合が発生
+  $('#star').raty({
+   size      : 36,
+   starOff   : '<%= asset_path('star-off.png') %>',
+   starOn    : '<%= asset_path('star-on.png') %>',
+   starHalf  : '<%= asset_path('star-half.png') %>',
+ 　scoreName : 'movie[star]', 　//これがmovieモデルのstarカラムへ値を保存という意味
+   half      : true
+  });
+ </script>
  <% end %>
+ </div>
 
 
-<h2> 投稿一覧 </h2>
 
- <% @movies.each do |movie| %>
- <%= link_to movie.movie_content, movie %>
+<div>
+ <h2> 投稿一覧 </h2>
 
 
- <% end %>
- <%= link_to 'ホーム', root_path %>
+   <%= link_to @movie.movie_content, customer_path(@customer) %>
+    <div id="star-rate<%= @movie.id%>">
+    <script>
+      $('#star-rate<%= @movie.id %>').empty();　　//これがないとブラウザバックで星が増え続ける不具合が発生
+      $('#star-rate<%= @movie.id%>').raty({
+        size      : 36,
+        starOff   : '<%= asset_path('star-off.png') %>',
+        starOn    : '<%= asset_path('star-on.png') %>',
+        starHalf  : '<%= asset_path('star-half.png') %>',
+        readOnly  : true,　　//読み取り専用、編集できないようにする
+        score: <%= @movie.star.present?? @movie.star : 0 %>
+      });
+    </script>
+    </div>
+
+    <% @movie.comments.each do |commnet| %>
+      <p><%= commnet.comment_content %></p>
+    <%end%>
 </div>
+
+<div><%= link_to 'ホーム', root_path %></div>

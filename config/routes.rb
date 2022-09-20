@@ -1,4 +1,6 @@
  Rails.application.routes.draw do
+  namespace :public do
+  end
   # 顧客用
   # URL /customers/sign_in ...
   devise_for :customers,skip: [:passwords], controllers: {
@@ -25,12 +27,9 @@
    resources :comments, only: [:create]
    get 'customers/unsubscribe' => 'customers#unsubscribe'
    patch 'customers/withdraw' => 'customers#withdraw'
-   get 'customers/my_page' => 'customers#show'
    get 'customers/information/edit' => 'customers#edit'
    patch 'customers/information' => 'customers#update'
-   get 'orders/done' => 'orders#done'
-   resources :orders, only: [:new,:create,:index,:show]
-
+   resources :customers, only: [:show,:edit]
  end
  namespace :admin do
    root to: "homes#top"
