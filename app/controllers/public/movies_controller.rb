@@ -16,12 +16,16 @@ class Public::MoviesController < ApplicationController
   def show
    @movie_data = JSON.parse((Tmdb::Movie.detail(params[:id], language: 'ja')).to_json)
 
-   @movie = Movie.new
-   @movie.moviedata_id = params[:id]
+   # @movie = Movie.new
+   # @movie.moviedata_id = params[:id]
+
+   # @movies = Movie.where(moviedata_id: params[:id])
 
    @movie = Movie.find_by(moviedata_id: params[:id])
-   @customer = @movie.customer
+   #@customer = @movie.customer
    @comment = Comment.new  #投稿詳細画面でコメントの投稿を行うので、formのパラメータ用にCommentオブジェクトを取得
+   @comment.movie_id = @movie.id
+   @comment.moviedata_id = @movie.moviedata_id
   end
 
    def create
@@ -35,7 +39,7 @@ class Public::MoviesController < ApplicationController
 
   private
   def movie_params
-    params.require(:movie).permit(:movie_content, :star, :moviedata_id)
+    params.require(:movie).permit(:movie_content, :star, :moviedata_id, :title)
   end
 
 end

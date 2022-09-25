@@ -2,28 +2,35 @@
  <h1>プロフィール</h1>
  <h3><%= @customer.name %></h3>
   <%= image_tag @customer.get_profile_image %>
+  <% if @customer == current_customer %>
+  <p><%= link_to "プロフィール編集", edit_customer_path(@customer) %></p>
+  <% end %>
 </div>
 
 <h3>レビュー投稿一覧</h3>
-<% @movies.each do |movie| %>
+<% @customer.comments.each do |comment| %>
 <div>
-  <P>コメント
-  <%= link_to movie.movie_content %>
-  </P>
-  <P>レビュー
-    <div id="star-rate<%= movie.id%>">
+  <p>タイトル <%= comment.title %></p>
+  <P>コメント <%= comment.comment_content %></P>
+  <P>
+    <div id="star-rate<%= comment.id %>">
     <script>
-      $('#star-rate<%= movie.id %>').empty();　　//これがないとブラウザバックで星が増え続ける不具合が発生
-      $('#star-rate<%= movie.id%>').raty({
+      $('#star-rate<%= comment.id %>').empty();　　//これがないとブラウザバックで星が増え続ける不具合が発生
+      $('#star-rate<%= comment.id %>').raty({
         size      : 36,
         starOff   : '<%= asset_path('star-off.png') %>',
         starOn    : '<%= asset_path('star-on.png') %>',
         starHalf  : '<%= asset_path('star-half.png') %>',
         readOnly  : true,　　//読み取り専用、編集できないようにする
-        score: <%= movie.star.present?? movie.star : 0 %>
+        score: <%= comment.star.present?? comment.star : 0 %>
       });
     </script>
     </div>
   </P>
+  <% if @customer == current_customer %>
+  <p><%= link_to "レビュー編集", edit_comment_path(comment) %></p>
+  <p><%= link_to "削除", comment_path(comment), method: :delete %></p>
+  <% end %>
+
 </div>
 <% end %>

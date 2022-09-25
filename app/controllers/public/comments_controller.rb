@@ -8,8 +8,27 @@ class Public::CommentsController < ApplicationController
     end
   end
 
+  def edit
+    @comment = Comment.find(params[:id])
+  end
+
+  def update
+    @comment = Comment.find(params[:id])
+    if @comment.update(comment_params)
+       redirect_to customer_path(@comment.customer_id), notice: "You have updated user successfully."
+    else
+       render :edit
+    end
+  end
+
+  def destroy
+    @comment = Comment.find(params[:id])
+    @comment.destroy
+    redirect_to customer_path(@comment.customer_id), notice: "You have updated user successfully."
+  end
+
   private
   def comment_params
-    params.require(:comment).permit(:comment_content, :movie_id, :moviedata_id)  #formにてmovie_idパラメータを送信して、コメントへpost_idを格納するようにする必要がある。
+    params.require(:comment).permit(:comment_content, :movie_id, :moviedata_id, :star, :title)  #formにてmovie_idパラメータを送信して、コメントへpost_idを格納するようにする必要がある。
   end
 end

@@ -1,9 +1,6 @@
 <div class="card">
  <div class="card-upperinfo">
   <h2 class="release-title"><%= @movie_data['table']['title'] %></h2>
-          <div class=<%= "favorite_buttons_" + @movie.id.to_s %>>
-            <%#= render "favorites/favorite", movie: @movie %>
-        　</div>
   <p class="release-overview">あらすじ</br>
 　 <%= @movie_data['table']['overview'] %>
 　</p>
@@ -19,16 +16,31 @@
 <div>
  <h2>投稿する</H2>
 
-  <%= form_with model: @movie do |f| %>
-  <%= f.text_area :movie_content, placeholder: '本文'%>
-
-  <%= f.hidden_field :moviedata_id %>
-  <%= f.submit '送信'%>
+  <%= form_with model: @comment do |f| %>
+   <!--<div class="form-group">-->
+    <%#= f.label :title %>
+    <%#= f.text_area :title, placeholder: 'タイトル', :size => "20×10" %>
+   <!--</div>-->
+   <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, placeholder: 'タイトル' %>
+   </div>
+   <div class="form-group">
+    <%= f.label :text %>
+    <%= f.text_area :comment_content, placeholder: '本文' %>
+   </div>
+   <div class="form-group">
+    <%= f.hidden_field :movie_id, value: @comment.movie_id %>
+    <%= f.hidden_field :moviedata_id, value: @comment.moviedata_id %>
+   </div>
+   <div class="form-group">
+    <%= f.submit '送信'%>
+   </div>
 
  <h5>評価</h5>
  <div class="form-group row" id="star">
   <%= f.label :star, class:'col-md-3 col-form-label' %>
-  <%= f.hidden_field :star, id: :review_star %>
+  <%= f.hidden_field :comment['star'], id: :review_star %>
  </div>
  <script>
   $('#star').empty(); 　　//これがないとブラウザバックで星が増え続ける不具合が発生
@@ -37,7 +49,7 @@
    starOff   : '<%= asset_path('star-off.png') %>',
    starOn    : '<%= asset_path('star-on.png') %>',
    starHalf  : '<%= asset_path('star-half.png') %>',
- 　scoreName : 'movie[star]', 　//これがmovieモデルのstarカラムへ値を保存という意味
+ 　scoreName : 'comment[star]', 　//これがmovieモデルのstarカラムへ値を保存という意味
    half      : true
   });
  </script>
@@ -48,26 +60,22 @@
 
 <div>
  <h2> 投稿一覧 </h2>
+    <% @movie.comments.each do |comment| %>
+      <p><%= link_to comment.customer.name, customer_path(comment.customer) %></p>
+      <p>タイトル：<%= comment.title %></p>
+      <p>コメント：<%= comment.comment_content %></p>
+      <div id="star-rate<%= comment.id%>"></div>
 
-
-   <%= link_to @movie.movie_content, customer_path(@customer) %>
-    <div id="star-rate<%= @movie.id%>">
-    <script>
-      $('#star-rate<%= @movie.id %>').empty();　　//これがないとブラウザバックで星が増え続ける不具合が発生
-      $('#star-rate<%= @movie.id%>').raty({
+     <script>
+      $('#star-rate<%= comment.id %>').empty();　　//これがないとブラウザバックで星が増え続ける不具合が発生
+      $('#star-rate<%= comment.id%>').raty({
         size      : 36,
         starOff   : '<%= asset_path('star-off.png') %>',
         starOn    : '<%= asset_path('star-on.png') %>',
         starHalf  : '<%= asset_path('star-half.png') %>',
         readOnly  : true,　　//読み取り専用、編集できないようにする
-        score: <%= @movie.star.present?? @movie.star : 0 %>
+        score: <%= comment.star.present? ? comment.star : 0 %>
       });
-    </script>
-    </div>
-
-    <% @movie.comments.each do |commnet| %>
-      <p><%= commnet.comment_content %></p>
+     </script>
     <%end%>
 </div>
-
-<div><%= link_to 'ホーム', root_path %></div>

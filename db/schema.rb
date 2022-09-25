@@ -53,6 +53,8 @@ ActiveRecord::Schema.define(version: 2022_09_19_070708) do
   end
 
   create_table "comments", force: :cascade do |t|
+    t.float "star"
+    t.string "title"
     t.text "comment_content"
     t.integer "customer_id", null: false
     t.integer "movie_id", null: false
@@ -86,7 +88,6 @@ ActiveRecord::Schema.define(version: 2022_09_19_070708) do
   create_table "movies", force: :cascade do |t|
     t.integer "moviedata_id"
     t.text "movie_content"
-    t.string "star"
     t.integer "customer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

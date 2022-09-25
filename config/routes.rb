@@ -23,13 +23,11 @@
    get 'about' => 'homes#about'
    resources :items, only: [:index,:show]
    resources :genres, only: [:show]
-   resources :movies, only: [:new,:create,:index,:show]
-   resources :comments, only: [:create]
+   resources :movies, only: [:new,:create,:show]
+   resources :comments, only: [:create,:edit,:update, :destroy]
    get 'customers/unsubscribe' => 'customers#unsubscribe'
    patch 'customers/withdraw' => 'customers#withdraw'
-   get 'customers/information/edit' => 'customers#edit'
-   patch 'customers/information' => 'customers#update'
-   resources :customers, only: [:show,:edit]
+   resources :customers, only: [:show,:edit,:update, :destroy]
  end
  namespace :admin do
    root to: "homes#top"
