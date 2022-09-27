@@ -19,69 +19,41 @@
 <div>
   <%= form_tag(root_path, method: :get) do %>
     <%= search_field_tag :looking_for, nil, placeholder: 'Movie Title...' %>
+    <%= select_tag :genre_id, options_for_select(@tmdb_genres, params[:genre_id]), include_blank: true %>
     <%= submit_tag '検索' %>
   <% end %>
 </div>
 
 <%# 検索された時にコンテンツを表示する %>
-<%if params[:looking_for].present? %>
-    <% movieinfo = JSON.parse((Tmdb::Search.movie(params[:looking_for])).to_json) %>
+<% if params[:looking_for].present? %>
     <h2><%= params[:looking_for] %>の検索結果</h2>
-    =====================
-    <% i = 0 %>
-    <div class="card-wrapper">
-        <% while i < movieinfo['table']['results'].count %>
-            <div class="card">
-                <div class="card-upperinfo">
-                    <%if movieinfo['table']['results'][i]['table']['title'].present?%>
-                    <% movie_id = movieinfo['table']['results'][i]['table']['id'] %>
-                     <h3><%= link_to "この作品の詳細を見る", movie_path(movie_id) %></h3>
-                     
-                    <%end%>
-
-                    <% if movieinfo['table']['results'][i]['table']['release_date'].present? %>
-                     <p class="release-date"><%= movieinfo['table']['results'][i]['table']['release_date'] %></p>
-                    <%end%>
-                </div>
-
-
-                <% if movieinfo['table']['results'][i]['table']['poster_path'].present? %>
-                    <p><%= image_tag 'https://image.tmdb.org/t/p/w1280' + movieinfo['table']['results'][i]['table']['poster_path'],class: "card-img" %></p>
-                <%end%>
-            </div>
-            <% i += 1%>
-        <%end%>
-    </div>
-<%else%>
-    <%# 検索されていない時にトレンドコンテンツを表示する %>
+<% elsif @tmdb_genre_name.present? %>
+    <h2>ジャンル: <%= @tmdb_genre_name %>の検索結果</h2>
+<% else %>
     <h2>公開中映画</h2>
-    ====================
-    <% movieinfo = JSON.parse((Tmdb::Movie.now_playing).to_json) %>
-    <% i = 0 %>
-    <div class="card-wrapper">
-        <% while i < movieinfo['table']['results'].count %>
-            <div class="card">
-                <div class="card-upperinfo">
-                    <%if movieinfo['table']['results'][i]['table']['title'].present?%>
-                    <% movie_id = movieinfo['table']['results'][i]['table']['id'] %>
-                    <% if Movie.where(moviedata_id: movie_id).exists? %>
-                      <h3><%= link_to "この作品の詳細を見る", movie_path(movie_id) %></h3>
+<% end %>
+=====================
+<div class="card-wrapper">
+    <% @tmdb_movies.each do |tmdb_movie| %>
+        <div class="card">
+            <div class="card-upperinfo">
+                <% if tmdb_movie.title.present? %>
+                    <% if Movie.where(moviedata_id: tmdb_movie.id).exists? %>
+                      <h3><%= link_to "この作品の詳細を見る", movie_path(tmdb_movie.id) %></h3>
                     <% else %>
-                      <h3><%= link_to "new", new_movie_path(moviedata_id: movie_id) %></h3>
+                      <h3><%= link_to "new", new_movie_path(moviedata_id: tmdb_movie.id) %></h3>
                     <% end %>
-                    <%end%>
+                <% end %>
 
-                    <% if movieinfo['table']['results'][i]['table']['release_date'].present? %>
-                        <p class="release-date"><%= movieinfo['table']['results'][i]['table']['release_date'] %></p>
-                    <%end%>
-                </div>
-
-                <% if movieinfo['table']['results'][i]['table']['poster_path'].present? %>
-                    <p><%= image_tag 'https://image.tmdb.org/t/p/w1280' + movieinfo['table']['results'][i]['table']['poster_path'],class: "card-img" %></p>
-                <%end%>
+                <% if tmdb_movie.release_date.present? %>
+                 <p class="release-date"><%= tmdb_movie.release_date %></p>
+                <% end %>
             </div>
 
-            <% i += 1%>
-        <%end%>
-    </div>
-<%end%>
+
+            <% if tmdb_movie.poster_path.present? %>
+                <p><%= image_tag 'https://image.tmdb.org/t/p/w1280' +  tmdb_movie.poster_path, class: "card-img" %></p>
+            <% end %>
+        </div>
+    <% end %>
+</div>

@@ -1,6 +1,6 @@
 <div>
- <h1>プロフィール</h1>
- <h3><%= @customer.name %></h3>
+ <h3>プロフィール</h3>
+ <h1><%= @customer.name %></h1>
   <%= image_tag @customer.get_profile_image %>
   <% if @customer == current_customer %>
   <p><%= link_to "プロフィール編集", edit_customer_path(@customer) %></p>
@@ -27,10 +27,21 @@
     </script>
     </div>
   </P>
-  <% if @customer == current_customer %>
-  <p><%= link_to "レビュー編集", edit_comment_path(comment) %></p>
-  <p><%= link_to "削除", comment_path(comment), method: :delete %></p>
-  <% end %>
+  <%# if @customer == current_customer %>
+  <p><%#= link_to "レビュー編集", edit_comment_path(comment) %></p>
+  <p><%#= link_to "削除", comment_path(comment), method: :delete %></p>
+  <%# end %>
+
+   <% if customer_signed_in? && current_customer.id == comment.customer_id %>
+     <%= link_to "編集する", edit_comment_path(comment) %>
+     <%= button_to "削除する", comment_path(comment), method: :delete %>
+   <% elsif customer_signed_in? && current_customer.admin? && current_customer.id == comment.customer_id  %>
+     <%= link_to "編集する", edit_comment_path(comment) %>
+     <%= button_to "削除する",  comment_path(comment), method: :delete %>
+   <% end %>
+   <% if current_customer.admin? %>
+     <%= link_to "管理者が削除する",comment_path(comment), method: :delete %>
+   <% end %>
 
 </div>
 <% end %>

@@ -4,11 +4,13 @@
   <p class="release-overview">あらすじ</br>
 　 <%= @movie_data['table']['overview'] %>
 　</p>
+  <p>
+   <% @movie_data['table']['genres'].map {|g| g["table"]["name"]}.each do |d| %>
+    <span><%= d %></span>
+   <% end %>
+  </p>
  </div>
   <p><%= image_tag 'https://image.tmdb.org/t/p/w1280' + @movie_data['table']['poster_path'],class: "card-img" %></p>
-</div>
-<div>
- <p><%#= @movie_data['table']['cast'] %></p>
 </div>
 
 
