@@ -15,6 +15,7 @@
    get 'customers/unsubscribe' => 'customers#unsubscribe'
    patch 'customers/withdraw' => 'customers#withdraw'
    resources :customers, only: [:index, :show, :edit, :update, :destroy]
+   post 'homes/guest', to: 'homes#guest'
  end
 
 end

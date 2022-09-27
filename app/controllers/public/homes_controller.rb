@@ -14,6 +14,14 @@ class Public::HomesController < ApplicationController
     @tmdb_movies = TmdbMovie.get(result)
   end
 
+  def guest
+    guest = Customer.find_or_create_by!(email: 'guest@example.com') do |customer|
+      customer.password = SecureRandom.urlsafe_base64
+    end
+    sign_in guest
+    redirect_to root_path
+  end
+
   def search
   end
 
