@@ -33,11 +33,11 @@
   <%# end %>
 
    <% if customer_signed_in? && current_customer.id == comment.customer_id %>
-     <%= link_to "編集する", edit_comment_path(comment) %>
-     <%= button_to "削除する", comment_path(comment), method: :delete %>
+     <%= link_to "編集する", edit_comment_path(comment), class: 'btn btn-success' %>
+     <%= button_to "削除する", comment_path(comment), method: :delete, class: "btn btn-sm btn-danger" %>
    <% elsif customer_signed_in? && current_customer.admin? && current_customer.id == comment.customer_id  %>
-     <%= link_to "編集する", edit_comment_path(comment) %>
-     <%= button_to "削除する",  comment_path(comment), method: :delete %>
+     <%= link_to "編集する", edit_comment_path(comment), class: 'btn btn-success' %>
+     <%= button_to "削除する",  comment_path(comment), method: :delete, class: "btn btn-sm btn-danger" %>
    <% end %>
    <% if current_customer.admin? %>
      <%= link_to "管理者が削除する",comment_path(comment), method: :delete %>
