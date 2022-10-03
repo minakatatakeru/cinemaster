@@ -21,13 +21,17 @@
             <li>
               <%= link_to "ログイン", new_customer_session_path %>
             </li>
+            
             <li>
               <%= link_to "ゲストログイン", homes_guest_path, method: :post %>
             </li>
           <% end %>
-            </ul>
-            <div><%= link_to 'ホーム', root_path %></div>
-          </div>
+          <li>
+           　  <%= link_to root_path, class: 'nav-link text-light' do %>
+               <i class="fas fa-home"></i> ホーム
+              <% end %>
+          </li>
+         </ul>
     </div>
   </nav>
 </header>
