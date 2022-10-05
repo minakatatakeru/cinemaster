@@ -26,11 +26,7 @@
       });
     </script>
     </div>
-  </P>
-  <%# if @customer == current_customer %>
-  <p><%#= link_to "レビュー編集", edit_comment_path(comment) %></p>
-  <p><%#= link_to "削除", comment_path(comment), method: :delete %></p>
-  <%# end %>
+
 
    <% if customer_signed_in? && current_customer.id == comment.customer_id %>
      <%= link_to "編集する", edit_comment_path(comment), class: 'btn btn-success' %>
