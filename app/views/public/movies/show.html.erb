@@ -19,10 +19,6 @@
  <h2>投稿する</H2>
 
   <%= form_with model: @comment do |f| %>
-   <!--<div class="form-group">-->
-    <%#= f.label :title %>
-    <%#= f.text_area :title, placeholder: 'タイトル', :size => "20×10" %>
-   <!--</div>-->
    <div class="form-group">
     <%= f.label :title %>
     <%= f.text_field :title, placeholder: 'タイトル' %>
