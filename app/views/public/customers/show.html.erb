@@ -1,43 +1,46 @@
-<div>
- <h3>プロフィール</h3>
- <h1><%= @customer.name %></h1>
-  <%= image_tag @customer.get_profile_image %>
-  <% if @customer == current_customer %>
-  <p><%= link_to "プロフィール編集", edit_customer_path(@customer), class: 'btn btn-success' %></p>
-  <% end %>
-</div>
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+    <div class='col-md-3'>
+     <h3>プロフィール</h3>
+     <h1><%= @customer.name %></h1>
+      <%= image_tag @customer.get_profile_image %>
+      <% if @customer == current_customer %>
+      <p><%= link_to "プロフィール編集", edit_customer_path(@customer), class: 'btn btn-success' %></p>
+      <% end %>
+    <h3>レビュー投稿一覧</h3>
+    <% @customer.comments.each do |comment| %>
+    <div>
+      <p>タイトル <%= comment.title %></p>
+      <P>コメント <%= comment.comment_content %></P>
+      <P>
+        <div id="star-rate<%= comment.id %>">
+        <script>
+          $('#star-rate<%= comment.id %>').empty();　　//これがないとブラウザバックで星が増え続ける不具合が発生
+          $('#star-rate<%= comment.id %>').raty({
+            size      : 36,
+            starOff   : '<%= asset_path('star-off.png') %>',
+            starOn    : '<%= asset_path('star-on.png') %>',
+            starHalf  : '<%= asset_path('star-half.png') %>',
+            readOnly  : true,　　//読み取り専用、編集できないようにする
+            score: <%= comment.star.present?? comment.star : 0 %>
+          });
+        </script>
+        </div>
 
-<h3>レビュー投稿一覧</h3>
-<% @customer.comments.each do |comment| %>
-<div>
-  <p>タイトル <%= comment.title %></p>
-  <P>コメント <%= comment.comment_content %></P>
-  <P>
-    <div id="star-rate<%= comment.id %>">
-    <script>
-      $('#star-rate<%= comment.id %>').empty();　　//これがないとブラウザバックで星が増え続ける不具合が発生
-      $('#star-rate<%= comment.id %>').raty({
-        size      : 36,
-        starOff   : '<%= asset_path('star-off.png') %>',
-        starOn    : '<%= asset_path('star-on.png') %>',
-        starHalf  : '<%= asset_path('star-half.png') %>',
-        readOnly  : true,　　//読み取り専用、編集できないようにする
-        score: <%= comment.star.present?? comment.star : 0 %>
-      });
-    </script>
+
+       <% if customer_signed_in? && current_customer.id == comment.customer_id %>
+         <%= link_to "編集する", edit_comment_path(comment), class: 'btn btn-success' %>
+         <%= button_to "削除する", comment_path(comment), method: :delete, class: "btn btn-sm btn-danger" %>
+       <% elsif customer_signed_in? && current_customer.admin? && current_customer.id == comment.customer_id  %>
+         <%= link_to "編集する", edit_comment_path(comment), class: 'btn btn-success' %>
+         <%= button_to "削除する",  comment_path(comment), method: :delete, class: "btn btn-sm btn-danger" %>
+       <% end %>
+       <% if current_customer.admin? %>
+         <%= link_to "管理者が削除する",comment_path(comment), method: :delete %>
+       <% end %>
+
     </div>
-
-
-   <% if customer_signed_in? && current_customer.id == comment.customer_id %>
-     <%= link_to "編集する", edit_comment_path(comment), class: 'btn btn-success' %>
-     <%= button_to "削除する", comment_path(comment), method: :delete, class: "btn btn-sm btn-danger" %>
-   <% elsif customer_signed_in? && current_customer.admin? && current_customer.id == comment.customer_id  %>
-     <%= link_to "編集する", edit_comment_path(comment), class: 'btn btn-success' %>
-     <%= button_to "削除する",  comment_path(comment), method: :delete, class: "btn btn-sm btn-danger" %>
-   <% end %>
-   <% if current_customer.admin? %>
-     <%= link_to "管理者が削除する",comment_path(comment), method: :delete %>
-   <% end %>
-
+    <% end %>
+   </div>
+  </div>
 </div>
-<% end %>
