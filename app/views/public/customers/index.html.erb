@@ -3,8 +3,8 @@
     <table class='table'>
     <thead>
       <tr>
-        <th>image</th>
-        <th>name</th>
+        <th>ユーザーアイコン</th>
+        <th>名前</th>
         <th colspan="3"></th>
       </tr>
     </thead>
@@ -14,7 +14,7 @@
           <td><%= image_tag customer.get_profile_image, size: '50x50' %></td>
           <td><%= customer.name %></td>
           <td><% if current_customer.admin? && !current_customer?(customer) %>
-      |       <%= link_to "delete", customer_path(customer.id), method: :delete, data: { confirm: "You sure?" } %>
+      |       <%= link_to "delete", customer_path(customer.id), method: :delete, data: { confirm: "本当に消しますか?" } %>
               <% end %>
           </td>
         <% end %>
