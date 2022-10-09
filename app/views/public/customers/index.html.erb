@@ -14,7 +14,7 @@
           <td><%= image_tag customer.get_profile_image, size: '50x50' %></td>
           <td><%= customer.name %></td>
           <td><% if current_customer.admin? && !current_customer?(customer) %>
-      |       <%= link_to "delete", customer_path(customer.id), method: :delete, data: { confirm: "本当に消しますか?" } %>
+      |       <%= link_to "delete", customer_path(customer.id), method: :delete, data: { confirm: "本当に消しますか?" }, class: "btn btn-sm btn-danger" %>
               <% end %>
           </td>
         <% end %>

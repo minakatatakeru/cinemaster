@@ -16,7 +16,7 @@
 
 <div>
   <%= form_tag(root_path, method: :get) do %>
-    <%= search_field_tag :looking_for, nil, placeholder: 'Movie Title...' %>
+    <%= search_field_tag :looking_for, nil, placeholder: '映画のタイトル' %>
     <%= select_tag :genre_id, options_for_select(@tmdb_genres, params[:genre_id]), include_blank: true %>
     <%= submit_tag '検索' %>
   <% end %>

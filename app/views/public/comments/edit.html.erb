@@ -1,35 +1,41 @@
-<h2>レビュー編集</h2>
- <%= form_with model: @comment do |f| %>
-  <div class="form-group">
-   <%= f.label :title %>
-   <%= f.text_field :title, placeholder: 'タイトル' %>
-  </div>
-  <div class="form-group">
-   <%= f.label :text %>
-   <%= f.text_area :comment_content, placeholder: '本文' %>
-  </div>
-  <div class="form-group">
-   <%= f.hidden_field :movie_id, value: @comment.movie_id %>
-   <%= f.hidden_field :moviedata_id, value: @comment.moviedata_id %>
-  </div>
-  <div class="form-group">
-   <%= f.submit '編集確定'%>
-  </div>
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+    <div class='col-md-3'>
+      <h2>レビュー編集</h2>
+       <%= form_with model: @comment do |f| %>
+        <div class="form-group">
+         <%= f.label :タイトル %>
+         <%= f.text_field :title, placeholder: 'タイトル' %>
+        </div>
+        <div class="form-group">
+         <%= f.label :コメント %>
+         <%= f.text_area :comment_content, placeholder: 'コメント' %>
+        </div>
+        <div class="form-group">
+         <%= f.hidden_field :movie_id, value: @comment.movie_id %>
+         <%= f.hidden_field :moviedata_id, value: @comment.moviedata_id %>
+        </div>
+        <div class="form-group">
+         <%= f.submit '編集確定'%>
+        </div>
 
- <div class="form-group row" id="star">
-  <%= f.label :star, class:'col-md-3 col-form-label' %>
-  <%= f.hidden_field :comment['star'], id: :review_star %>
- </div>
- <script>
-  $('#star').empty(); 　　//これがないとブラウザバックで星が増え続ける不具合が発生
-  $('#star').raty({
-   size      : 36,
-   starOff   : '<%= asset_path('star-off.png') %>',
-   starOn    : '<%= asset_path('star-on.png') %>',
-   starHalf  : '<%= asset_path('star-half.png') %>',
- 　scoreName : 'comment[star]', 　//これがmovieモデルのstarカラムへ値を保存という意味
-   half      : true
-  });
- </script>
- <% end %>
- </div>
+       <div class="form-group row" id="star">
+        <%= f.label :star, class:'col-md-3 col-form-label' %>
+        <%= f.hidden_field :comment['star'], id: :review_star %>
+       </div>
+       <script>
+        $('#star').empty(); 　　//これがないとブラウザバックで星が増え続ける不具合が発生
+        $('#star').raty({
+         size      : 36,
+         starOff   : '<%= asset_path('star-off.png') %>',
+         starOn    : '<%= asset_path('star-on.png') %>',
+         starHalf  : '<%= asset_path('star-half.png') %>',
+       　scoreName : 'comment[star]', 　//これがmovieモデルのstarカラムへ値を保存という意味
+         half      : true
+        });
+       </script>
+        <% end %>
+       </div>
+   </div>
+  </div>
+</div>
