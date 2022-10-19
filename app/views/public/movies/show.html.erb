@@ -1,23 +1,4 @@
-<div class='container px-5 px-sm-0'>
-  <div class='row'>
-    <div class='col-md-3'>
-     <div class="card">
-      <div class="card-upperinfo">
-       <h2 class="release-title"><%= @movie_data['table']['title'] %></h2>
-        <p class="release-overview">あらすじ</br>
-      　 <%= @movie_data['table']['overview'] %>
-      　</p>
-        <p>
-         <% @movie_data['table']['genres'].map {|g| g["table"]["name"]}.each do |d| %>
-          <span><%= d %></span>
-         <% end %>
-        </p>
-       </div>
-     </div>
-  </div>
-</div>
-   <p><%= image_tag 'https://image.tmdb.org/t/p/w1280' + @movie_data['table']['poster_path'],class: "card-img" %></p>
- </div>
+
 
 
 <div class='container px-5 px-sm-0'>
